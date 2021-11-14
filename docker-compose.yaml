@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  app:
+    image: 389798/domini-image
+    container_name: domini-main-container
+    restart: always
+    build:
+      context: ./
+    env_file:
+      - .development.env
+    depends_on:
+      - pg
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src/auth
+      - ./src/jwt-token
+      - ./src/users
+      - ./src/surprise
+    networks:
+      - domini-network
+
+  pg:
+    image: postgres
+    container_name: pg-domini-container
+    env_file:
+      - .development.env
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWORD=rambler557
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=domini
+    volumes:
+      - pg-domini:/var/lib/postgresql/data
+    networks:
+      - domini-network
+
+volumes:
+  pg-domini:
+
+networks:
+  domini-network:
+    driver: bridge
