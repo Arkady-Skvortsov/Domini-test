@@ -1,13 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  OneToMany,
-} from 'typeorm';
-import JwtTokenEntity from 'src/jwt-token/entities/jwt-token.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import FriendsEntity from './friends.entity';
+import PresentEntity from '../../present/entities/present.entity';
 
 @Entity({ name: 'users' })
 export default class UserEntity {
@@ -28,34 +22,58 @@ export default class UserEntity {
   public username: string;
 
   @ApiProperty({
-    type: String,
-    example: 'Arkasha.jpg',
-    description: 'Photo of the current user',
+    type: Number,
+    example: 100,
+    description: 'Level of the health from current user',
   })
-  @Column({ type: 'varchar', nullable: false })
-  public photo: string;
+  @Column({ type: 'int', nullable: false })
+  public health: number;
 
   @ApiProperty({
-    type: () => JwtTokenEntity,
-    example: 'U73@$fghlOp234',
-    description: 'JWT Refresh Token',
+    type: Number,
+    example: 50,
+    description: 'Level of the defense from current user',
   })
-  @OneToOne(() => JwtTokenEntity, (jwt) => jwt.token)
-  public refreshToken: JwtTokenEntity;
+  @Column({ type: 'int', nullable: false })
+  public defense: number;
 
   @ApiProperty({
     type: Number,
     example: 2000,
     description: 'Coins of the current user',
   })
-  @Column({ type: 'bigint', default: 0 })
+  @Column({ type: 'bigint', nullable: false })
   public coins: number;
 
   @ApiProperty({
+    type: Number,
+    example: 1000,
+    description: 'Cristaly of the current user',
+  })
+  @Column({ type: 'bigint', nullable: false })
+  public cristaly: number;
+
+  @ApiProperty({
     type: () => FriendsEntity,
-    example: 'Ilya, Ilshat, Khamil',
+    example: 'Ilya, Ilshat, Khamil Mysliwiec',
     description: 'Friends of the current user',
   })
-  @OneToMany(() => FriendsEntity, (friends) => friends.user)
+  @OneToMany(() => FriendsEntity, (friends) => friends.friends)
   public friends: FriendsEntity[];
+
+  @ApiProperty({
+    type: () => PresentEntity,
+    example: 'Present #1',
+    description: 'Present, which current user catched from another user',
+  })
+  @OneToMany(() => PresentEntity, (present) => present)
+  catchPresents: PresentEntity[];
+
+  @ApiProperty({
+    type: () => PresentEntity,
+    example: 'Resources, Buddy! :)',
+    description: 'Present, which current user sended to another user',
+  })
+  @OneToMany(() => PresentEntity, (present) => present)
+  public sendPresents: PresentEntity[];
 }

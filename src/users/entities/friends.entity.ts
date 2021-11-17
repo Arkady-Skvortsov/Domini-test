@@ -14,9 +14,9 @@ export default class FriendsEntity {
 
   @ApiProperty({
     type: () => UserEntity,
-    example: 'Petya',
-    description: 'User, which is friend of the another user',
+    example: '[Arkadiy, Serega, Khamil]',
+    description: 'Friend of the current user',
   })
-  @ManyToOne(() => UserEntity, (user) => user.friends)
-  public user: UserEntity;
+  @ManyToOne(() => UserEntity, (user) => user)
+  public friends: UserEntity;
 }

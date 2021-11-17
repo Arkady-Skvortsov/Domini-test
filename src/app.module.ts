@@ -2,9 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
-import { SurprisesModule } from './surprises/surprises.module';
-import { JwtTokenModule } from './jwt-token/jwt-token.module';
-import { AuthModule } from './auth/auth.module';
+import { PresentModule } from './present/present.module';
 
 @Module({
   imports: [
@@ -20,15 +18,13 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.PG_DB,
       port: +process.env.PG_PORT,
       host: process.env.PG_HOST,
-      entities: ['../dist/**/*.entity.{ts, js}'],
+      entities: ['../dist/*/entities/*.entity.{ts, js}'],
       autoLoadEntities: true,
       synchronize: true,
     }),
 
     UsersModule,
-    SurprisesModule,
-    JwtTokenModule,
-    AuthModule,
+    PresentModule,
   ],
 })
 export default class AppModule {}

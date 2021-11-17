@@ -9,13 +9,12 @@ services:
       context: ./
     env_file:
       - .development.env
+    # command: npm run migration:up
     depends_on:
       - pg
     ports:
       - 3000:3000
     volumes:
-      - ./src/auth
-      - ./src/jwt-token
       - ./src/users
       - ./src/surprise
     networks:
@@ -29,7 +28,6 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_PASSWORD=rambler557
       - POSTGRES_USER=postgres
       - POSTGRES_DB=domini

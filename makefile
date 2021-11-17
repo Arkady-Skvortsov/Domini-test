@@ -1,11 +1,11 @@
 domini-build:
 	docker build -t 389798/domini-image .
 doimini-run:
-	docker run --rm -p 3000:3000 --name domini-main-container 389798/domini-image 
+	docker run --rm -p 3000:3000 --name domini-main-container 389798/domini-image
 domini-stop:
 	docker stop domini-main-container 
 domini-inside:
-  docker exec -it domini-main-container /bin/bash
+	docker exec -it domini-main-container /bin/bash
 domini-rmi:
 	docker rmi 389798/domini-image 
 pg-build:
