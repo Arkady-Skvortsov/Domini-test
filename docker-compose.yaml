@@ -4,18 +4,16 @@ services:
   app:
     image: 389798/domini-image
     container_name: domini-main-container
-    restart: always
     build:
       context: ./
     env_file:
       - .development.env
-    # command: npm run migration:up
-    depends_on:
-      - pg
     ports:
       - 3000:3000
     volumes:
       - ./src/users
+      - ./src/auth
+      - ./src/jwt-token
       - ./src/surprise
     networks:
       - domini-network
@@ -28,6 +26,7 @@ services:
     ports:
       - 5432:5432
     environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_PASSWORD=rambler557
       - POSTGRES_USER=postgres
       - POSTGRES_DB=domini

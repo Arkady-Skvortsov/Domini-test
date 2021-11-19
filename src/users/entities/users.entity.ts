@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import FriendsEntity from './friends.entity';
 import PresentEntity from '../../present/entities/present.entity';
+import JwtTokenEntity from 'src/jwt-token/entities/jwt-token.entity';
 
 @Entity({ name: 'users' })
 export default class UserEntity {
@@ -22,12 +29,27 @@ export default class UserEntity {
   public username: string;
 
   @ApiProperty({
+    type: String,
+    example: 'Password123',
+    description: 'Password of the current user',
+  })
+  @Column({ type: 'varchar', nullable: true })
+  public password: string;
+
+  @ApiProperty({
     type: Number,
     example: 100,
     description: 'Level of the health from current user',
   })
   @Column({ type: 'int', nullable: false })
   public health: number;
+
+  @ApiProperty({
+    type: () => JwtTokenEntity,
+    description: 'Current Jwt Token of the current user',
+  })
+  @OneToOne(() => JwtTokenEntity, (jwt) => jwt.user)
+  public jwt_token: JwtTokenEntity;
 
   @ApiProperty({
     type: Number,

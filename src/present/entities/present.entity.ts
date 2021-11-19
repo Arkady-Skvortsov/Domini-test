@@ -3,7 +3,7 @@ import { resourceType } from 'src/users/dto/users.dto';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import UserEntity from '../../users/entities/users.entity';
 
-@Entity({ name: 'present' })
+@Entity({ name: 'presents' })
 export default class PresentEntity {
   @ApiProperty({
     type: Number,

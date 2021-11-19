@@ -4,13 +4,14 @@ import {
   Param,
   HttpException,
   HttpStatus,
+  Post,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentService } from './present.service';
 import { presentType } from './dto/present.dto';
 
 @ApiTags('Present')
-@Controller('present')
+@Controller('presents')
 export class PresentController {
   constructor(private presentService: PresentService) {}
 
@@ -24,6 +25,20 @@ export class PresentController {
       throw new HttpException(
         'Не удалось получить информацию о последней вещи, которую вы запра',
         HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @ApiOperation({ summary: 'Should be send a present to users friend' })
+  @ApiResponse({ type: Object, status: 201 })
+  @Post('/send/:friend_id')
+  async send_present_to_friend() {
+    try {
+      return 'present to friend';
+    } catch (e) {
+      throw new HttpException(
+        'Не удалось отправить подарок другу',
+        HttpStatus.FORBIDDEN,
       );
     }
   }
