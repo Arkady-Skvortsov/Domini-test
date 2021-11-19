@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import RegDTO from 'src/auth/dto/reg.dto';
 import { Repository } from 'typeorm';
+import RegDTO from 'src/auth/dto/reg.dto';
 import RecourceOperationDTO, { resourceType, resuorces } from './dto/users.dto';
 import UserEntity from './entities/users.entity';
 
@@ -45,7 +45,9 @@ export class UsersService {
   }
 
   async create_user(dto: RegDTO<string, number>) {
-    const new_user = await this.userEntity.create({ ...dto });
+    const new_user = await this.userEntity.create(dto);
+
+    await this.userEntity.save(new_user);
 
     return new_user;
   }

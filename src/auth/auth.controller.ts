@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
@@ -22,21 +23,11 @@ export class AuthController {
   @ApiOperation({ summary: 'Should be registered a new user' })
   @ApiResponse({ type: String, status: 201 })
   @Post('/registration')
-  async registration(
-    @Res() res: Response,
-    @Body() dto: RegDTO<string, number>,
-  ) {
+  async registration(@Body() dto: RegDTO<string, number>) {
     try {
-      console.log(dto);
-
-      //return this.authService.registration(dto);
-
-      // res.cookie('jwt', user.jwt_token, {
-      //   expires: new Date(Date.now() * 24 * 60 * 60 * 3600),
-      //   secure: true,
-      // });
+      return this.authService.registration(dto);
     } catch (e) {
-      console.log(e);
+      throw new UnauthorizedException('Такой пользователь не зарегистрирован');
     }
   }
 

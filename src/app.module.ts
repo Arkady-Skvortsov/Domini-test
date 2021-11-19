@@ -19,12 +19,11 @@ import { AuthModule } from './auth/auth.module';
       database: process.env.PG_DB,
       port: +process.env.PG_PORT,
       host: process.env.PG_HOST,
-      entities: ['../dist/*/entities/*.entity.{ts, js}'],
+      entities: ['../dist/**/*.entity.{ts, js}'],
       autoLoadEntities: true,
       synchronize: true,
     }),
 
-    UsersModule,
     PresentModule,
     AuthModule,
   ],

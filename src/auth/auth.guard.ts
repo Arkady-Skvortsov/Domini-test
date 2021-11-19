@@ -11,26 +11,24 @@ import { JwtTokenService } from 'src/jwt-token/jwt-token.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtTokenService: JwtTokenService) {}
-
   async canActivate(
     context: ExecutionContext,
     @Req() req?: Request,
   ): Promise<boolean> {
     const jwt = req.cookies['jwt'];
 
-    const verify_token = await this.jwtTokenService.verify_token(jwt);
+    // const verify_token = await this.jwtTokenService.verify_token(jwt);
 
-    const current_jwt_token = await this.jwtTokenService.find_token(
-      verify_token,
-    );
+    // const current_jwt_token = await this.jwtTokenService.find_token(
+    //   verify_token,
+    // );
 
-    if (!current_jwt_token) {
-      throw new HttpException(
-        'Такого игрока не существует',
-        HttpStatus.FORBIDDEN,
-      );
-    }
+    // if (!current_jwt_token) {
+    //   throw new HttpException(
+    //     'Такого игрока не существует',
+    //     HttpStatus.FORBIDDEN,
+    //   );
+    // }
 
     return true;
   }

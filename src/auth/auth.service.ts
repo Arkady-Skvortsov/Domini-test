@@ -25,15 +25,15 @@ export class AuthService {
 
     const { username, password, health, defense, coins, cristaly } = dto;
 
-    // const salt = await bcrypt.genSalt(5);
-    // const hash_password = await bcrypt.hash(password, salt);
+    const salt = await bcrypt.genSalt(5);
+    const hash_password = await bcrypt.hash(password, salt);
 
     const new_user: RegDTO<string, number> = {
       username,
       health,
       defense,
       coins,
-      password,
+      password: hash_password,
       cristaly,
     };
 
@@ -58,6 +58,8 @@ export class AuthService {
       );
 
     await this.check_password(dto.password, current_user.password);
+
+    await this.jwtTokenService.refresh_token(current_user.jwt_token.token);
 
     return current_user;
   }

@@ -6,8 +6,10 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')
@@ -45,6 +47,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Should be send invite into friends' })
   @ApiResponse({ type: Object, status: 201 })
+  @UseGuards(AuthGuard)
   @Post('/invite/:catcher_id')
   async invite_in_friends(
     @Param() catcher_id: number,

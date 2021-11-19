@@ -25,7 +25,7 @@ export default class UserEntity {
     example: 'Arkadiy',
     description: 'Username of the current user',
   })
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, unique: true })
   public username: string;
 
   @ApiProperty({
@@ -33,7 +33,7 @@ export default class UserEntity {
     example: 'Password123',
     description: 'Password of the current user',
   })
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, unique: true })
   public password: string;
 
   @ApiProperty({
@@ -89,7 +89,7 @@ export default class UserEntity {
     description: 'Present, which current user catched from another user',
   })
   @OneToMany(() => PresentEntity, (present) => present)
-  catchPresents: PresentEntity[];
+  public catchPresents: PresentEntity[];
 
   @ApiProperty({
     type: () => PresentEntity,

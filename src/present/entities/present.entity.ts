@@ -45,6 +45,11 @@ export default class PresentEntity {
   @Column({ type: 'int', nullable: false, default: 100 })
   public resources: number;
 
+  @ApiProperty({
+    type: String,
+    example: 'Coins',
+    description: 'Resource type for current present',
+  })
   @Column({ type: 'varchar', nullable: false })
   public resourcesType: resourceType;
 }

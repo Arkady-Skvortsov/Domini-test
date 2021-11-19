@@ -1,6 +1,6 @@
 FROM node:16.13.0
 
-WORKDIR /usr/src/domini
+WORKDIR /domini
 
 COPY package*.json ./
 

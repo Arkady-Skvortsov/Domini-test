@@ -19,6 +19,6 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([UserEntity, JwtTokenEntity]),
     UsersModule,
   ],
-  exports: [JwtTokenService],
+  exports: [JwtTokenService, JwtModule],
 })
 export class JwtTokenModule {}
