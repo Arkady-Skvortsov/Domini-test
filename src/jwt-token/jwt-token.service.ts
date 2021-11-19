@@ -18,12 +18,13 @@ export class JwtTokenService {
   async generate_token(dto: RegDTO<string, number>): Promise<string> {
     const token_payload = {
       username: dto.username,
-      password: dto.password,
     };
 
     const token = this.jwtService.sign(token_payload);
 
-    return token;
+    const new_token = await this.create_token(token, dto);
+
+    return new_token.token;
   }
 
   async refresh_token(token: string): Promise<string> {
@@ -48,5 +49,13 @@ export class JwtTokenService {
 
   async verify_token(token: string) {
     return this.jwtService.verify(token);
+  }
+
+  private async create_token(token: string, user: RegDTO<string, number>) {
+    const new_token = await this.jwtTokenEntity.create({ token, user });
+
+    await this.jwtTokenEntity.save(new_token);
+
+    return new_token;
   }
 }

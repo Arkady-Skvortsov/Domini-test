@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import UserEntity from 'src/users/entities/users.entity';
 
-@Entity({ name: 'jwt_token' })
+@Entity({ name: 'jwt_tokens' })
 export default class JwtTokenEntity {
   @ApiProperty({
     type: Number,
@@ -21,6 +21,6 @@ export default class JwtTokenEntity {
     example: 'Arkasha',
     description: 'Current user, which has a JWT token',
   })
-  @OneToOne(() => UserEntity, (user) => user.jwt_token)
+  @OneToOne(() => UserEntity, (user) => user.jwt_token, { onDelete: 'CASCADE' })
   public user: UserEntity;
 }

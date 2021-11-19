@@ -5,10 +5,14 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Body,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PresentService } from './present.service';
 import { presentType } from './dto/present.dto';
+import { JwtTokenGuard } from 'src/jwt-token/jwt-token.guard';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Present')
 @Controller('presents')
@@ -17,8 +21,9 @@ export class PresentController {
 
   @ApiOperation({ summary: 'Get last present with different types' })
   @ApiResponse({ type: Object, status: 200 })
-  @Get('/last/:type/user/:id')
-  async get_last_present(@Param() type: presentType, @Param() id: number) {
+  @UseGuards(JwtTokenGuard, AuthGuard)
+  @Get('/last/:type/')
+  async get_last_present(@Param() type: presentType, @Body() username: string) {
     try {
       return this.presentService.get_last_present();
     } catch (e) {
@@ -31,6 +36,7 @@ export class PresentController {
 
   @ApiOperation({ summary: 'Should be send a present to users friend' })
   @ApiResponse({ type: Object, status: 201 })
+  @UseGuards(JwtTokenGuard, AuthGuard)
   @Post('/send/:friend_id')
   async send_present_to_friend() {
     try {

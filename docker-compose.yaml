@@ -4,6 +4,7 @@ services:
   app:
     image: 389798/domini-image
     container_name: domini-main-container
+    restart: always
     env_file:
       - .development.env
     ports:

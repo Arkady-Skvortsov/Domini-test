@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { JwtTokenService } from './jwt-token.service';
-import { JwtTokenController } from './jwt-token.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import UserEntity from 'src/users/entities/users.entity';
 import JwtTokenEntity from './entities/jwt-token.entity';
@@ -9,7 +8,6 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [JwtTokenService],
-  controllers: [JwtTokenController],
   imports: [
     JwtModule.register({
       secret: process.env.JWT_TOKEN_SECRET,
@@ -19,6 +17,6 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([UserEntity, JwtTokenEntity]),
     UsersModule,
   ],
-  exports: [JwtTokenService, JwtModule],
+  exports: [JwtTokenService],
 })
 export class JwtTokenModule {}

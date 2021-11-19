@@ -9,6 +9,7 @@ import {
 import FriendsEntity from './friends.entity';
 import PresentEntity from '../../present/entities/present.entity';
 import JwtTokenEntity from 'src/jwt-token/entities/jwt-token.entity';
+import InviteEntity from 'src/invite/entities/invite.entity';
 
 @Entity({ name: 'users' })
 export default class UserEntity {
@@ -48,7 +49,7 @@ export default class UserEntity {
     type: () => JwtTokenEntity,
     description: 'Current Jwt Token of the current user',
   })
-  @OneToOne(() => JwtTokenEntity, (jwt) => jwt.user)
+  @OneToOne(() => JwtTokenEntity, (jwt) => jwt.user, { cascade: true })
   public jwt_token: JwtTokenEntity;
 
   @ApiProperty({
@@ -80,7 +81,9 @@ export default class UserEntity {
     example: 'Ilya, Ilshat, Khamil Mysliwiec',
     description: 'Friends of the current user',
   })
-  @OneToMany(() => FriendsEntity, (friends) => friends.friends)
+  @OneToMany(() => FriendsEntity, (friends) => friends.friends, {
+    cascade: true,
+  })
   public friends: FriendsEntity[];
 
   @ApiProperty({
@@ -98,4 +101,20 @@ export default class UserEntity {
   })
   @OneToMany(() => PresentEntity, (present) => present)
   public sendPresents: PresentEntity[];
+
+  @ApiProperty({
+    type: () => InviteEntity,
+    example: "{ text: 'Привет, может быть познакомимся?)', catcher: 'Sergey' }",
+    description: 'Invite, which I"m send to other user',
+  })
+  @OneToMany(() => InviteEntity, (invite) => invite.sender)
+  public myInvites: InviteEntity[];
+
+  @ApiProperty({
+    type: () => InviteEntity,
+    example: "{text: 'Могу ли я стать твоим другом?', sender: 'Arkadiy' }",
+    description: 'Entities, which users catched',
+  })
+  @OneToMany(() => InviteEntity, (invite) => invite.catcher)
+  public catchInvites: InviteEntity[];
 }

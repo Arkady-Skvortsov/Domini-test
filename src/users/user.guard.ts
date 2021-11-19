@@ -13,6 +13,8 @@ export class UserGuard implements CanActivate {
       ctx.getResponse(),
     );
 
+    console.log(ctx);
+
     return true;
   }
 }

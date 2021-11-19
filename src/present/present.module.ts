@@ -11,5 +11,6 @@ import { PresentGateway } from './present.gateway';
   providers: [PresentService, PresentGateway],
   controllers: [PresentController],
   imports: [TypeOrmModule.forFeature([PresentEntity, UserEntity]), UsersModule],
+  exports: [PresentService],
 })
 export class PresentModule {}

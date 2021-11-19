@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtTokenGuard } from 'src/jwt-token/jwt-token.guard';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')
@@ -19,6 +20,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Should be get all users' })
   @ApiResponse({ type: String, status: 200 })
+  @UseGuards(JwtTokenGuard, AuthGuard)
   @Get('/:id')
   async get_current_resources(@Param() id: number) {
     try {
@@ -31,23 +33,9 @@ export class UsersController {
     }
   }
 
-  @ApiOperation({ summary: 'Should be return a current user by his id' })
-  @ApiResponse({ type: String, status: 200 })
-  @Get('/current_user/:id')
-  async get_current_user(@Param() id: number) {
-    try {
-      return this.usersService.get_current_user(id);
-    } catch (e) {
-      throw new HttpException(
-        'Не удалось получить конкретного пользователя',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
   @ApiOperation({ summary: 'Should be send invite into friends' })
   @ApiResponse({ type: Object, status: 201 })
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtTokenGuard, AuthGuard)
   @Post('/invite/:catcher_id')
   async invite_in_friends(
     @Param() catcher_id: number,
