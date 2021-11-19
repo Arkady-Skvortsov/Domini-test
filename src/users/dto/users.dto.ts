@@ -1,8 +1,17 @@
-export type resourceType = 'Кристал' | 'Монета';
+export type resourceType = 'Кристалы' | 'Монеты';
 
-export interface resuorces<T> {
+export class resuorces<T> {
   coins: T;
   cristaly: T;
+}
+
+export class UpdateUserDTO {
+  coins: number;
+  cristaly: number;
+  jwtToken?: any;
+  catchInvites?: any;
+  catchPresents?: any;
+  friends?: any;
 }
 
 export default class RecourceOperationDTO<T> {

@@ -38,7 +38,7 @@ export class AuthController {
         httpOnly: true,
       });
 
-      response.send(new_user);
+      response.send(new_user.jwt_token);
     } catch (e) {
       throw new UnauthorizedException('Такой пользователь не зарегистрирован');
     }

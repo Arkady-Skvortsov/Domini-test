@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import RegDTO from 'src/auth/dto/reg.dto';
-import RecourceOperationDTO, { resourceType, resuorces } from './dto/users.dto';
+import RecourceOperationDTO, {
+  resourceType,
+  resuorces,
+  UpdateUserDTO,
+} from './dto/users.dto';
 import UserEntity from './entities/users.entity';
 
 @Injectable()
@@ -34,10 +38,6 @@ export class UsersService {
     if (operation_type === 'decrease') return (current_resource -= data.count);
   }
 
-  async invite_in_friends(sender: number, catcher: number) {
-    return `sender ${sender} send invite to the friends to ${catcher} catcher`;
-  }
-
   async get_current_user(id: number) {
     const current_user = await this.userEntity.findOne(id);
 
@@ -52,6 +52,14 @@ export class UsersService {
     return new_user;
   }
 
+  async update_current_user(username: string, dto: UpdateUserDTO) {
+    const current_user = await this.get_current_user_by_username(username);
+
+    await this.userEntity.update(current_user, dto);
+
+    return current_user;
+  }
+
   async get_current_user_by_username(username: string) {
     const current_user = await this.userEntity.findOne({ where: { username } });
 
@@ -61,8 +69,8 @@ export class UsersService {
   private async choose_resources(id: number, resourceType: resourceType) {
     const current_user = await this.get_current_user(id);
 
-    if (resourceType === 'Кристал') return current_user.cristaly;
+    if (resourceType === 'Кристалы') return current_user.cristaly;
 
-    if (resourceType === 'Монета') return current_user.coins;
+    if (resourceType === 'Монеты') return current_user.coins;
   }
 }

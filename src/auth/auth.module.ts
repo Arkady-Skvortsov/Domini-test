@@ -7,7 +7,6 @@ import JwtTokenEntity from '../jwt-token/entities/jwt-token.entity';
 import PresentEntity from '../present/entities/present.entity';
 import { JwtTokenModule } from '../jwt-token/jwt-token.module';
 import { UsersModule } from 'src/users/users.module';
-import { JwtTokenService } from 'src/jwt-token/jwt-token.service';
 
 @Module({
   providers: [AuthService],

@@ -96,19 +96,11 @@ export default class UserEntity {
 
   @ApiProperty({
     type: () => PresentEntity,
-    example: 'Resources, Buddy! :)',
-    description: 'Present, which current user sended to another user',
+    example: 'Present #2',
+    description: 'Present, which send a current user to other user',
   })
   @OneToMany(() => PresentEntity, (present) => present)
   public sendPresents: PresentEntity[];
-
-  @ApiProperty({
-    type: () => InviteEntity,
-    example: "{ text: 'Привет, может быть познакомимся?)', catcher: 'Sergey' }",
-    description: 'Invite, which I"m send to other user',
-  })
-  @OneToMany(() => InviteEntity, (invite) => invite.sender)
-  public myInvites: InviteEntity[];
 
   @ApiProperty({
     type: () => InviteEntity,

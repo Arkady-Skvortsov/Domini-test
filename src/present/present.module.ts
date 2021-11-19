@@ -5,10 +5,9 @@ import { PresentController } from './present.controller';
 import PresentEntity from './entities/present.entity';
 import UserEntity from 'src/users/entities/users.entity';
 import { UsersModule } from 'src/users/users.module';
-import { PresentGateway } from './present.gateway';
 
 @Module({
-  providers: [PresentService, PresentGateway],
+  providers: [PresentService],
   controllers: [PresentController],
   imports: [TypeOrmModule.forFeature([PresentEntity, UserEntity]), UsersModule],
   exports: [PresentService],

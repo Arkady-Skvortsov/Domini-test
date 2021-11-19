@@ -13,6 +13,7 @@ import { PresentService } from './present.service';
 import { presentType } from './dto/present.dto';
 import { JwtTokenGuard } from 'src/jwt-token/jwt-token.guard';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { UserGuard } from 'src/users/user.guard';
 
 @ApiTags('Present')
 @Controller('presents')
@@ -36,9 +37,12 @@ export class PresentController {
 
   @ApiOperation({ summary: 'Should be send a present to users friend' })
   @ApiResponse({ type: Object, status: 201 })
-  @UseGuards(JwtTokenGuard, AuthGuard)
-  @Post('/send/:friend_id')
-  async send_present_to_friend() {
+  @UseGuards(JwtTokenGuard, AuthGuard, UserGuard)
+  @Post('/send/:friend_name')
+  async send_present_to_friend(
+    @Param() friend_name: string,
+    @Body() token: string,
+  ) {
     try {
       return 'present to friend';
     } catch (e) {
