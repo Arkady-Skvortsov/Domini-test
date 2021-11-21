@@ -24,6 +24,7 @@ import { PresentsModule } from './presents/presents.module';
       synchronize: true,
     }),
 
+    InvitesModule,
     AuthModule,
   ],
 })

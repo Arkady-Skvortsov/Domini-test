@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
 
@@ -13,22 +19,27 @@ export class UserGuard implements CanActivate {
 
     const username = request.current_user;
     const friendname = request.body.friend_name;
-    
-    const current_user = this.userService.get_current_user_by_username(username);
+    let user_friend;
 
-    current_user.then(user => 
-      user.friends.map(friend => { 
-        if(friend.username === friendname) {
+    const current_user =
+      this.userService.get_current_user_by_username(username);
 
-        } 
-      }
-    )
+    current_user.then((user) => {
+      user.friends.map((friend) => {
+        if (friend.username === friendname) {
+          user_friend = friend;
+        }
+      });
+    });
 
-    if() {
-      throw new HttpException('Этот пользователь вам не друг!', HttpStatus.BAD_REQUEST);
+    if (!user_friend) {
+      throw new HttpException(
+        'Этот пользователь вам не друг!',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    request.friend = {};
+    request.friend = user_friend;
 
     return true;
   }

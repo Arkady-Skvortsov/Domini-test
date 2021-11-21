@@ -26,9 +26,11 @@ export class PresentsService {
     const { user } = await this.jwtTokenService.find_token(token);
 
     if (type === 'Отпрвленный') {
+      console.log(user.sendPresents[user.sendPresents.length - 1]);
     }
 
     if (type === 'Полученный') {
+      console.log(user.catchPresents[user.catchPresents.length - 1]);
     }
   }
 

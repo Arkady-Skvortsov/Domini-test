@@ -20,6 +20,5 @@ import { UsersService } from './users.service';
       JwtTokenEntity,
     ]),
   ],
-  exports: [UsersService],
 })
 export class UsersModule {}

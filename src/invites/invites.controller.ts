@@ -28,7 +28,7 @@ export class InvitesController {
   @Get('/all')
   async get_all_invites(@Body() token: string) {
     try {
-      return this.inviteService.get_all_invites(token);
+      return await this.inviteService.get_all_invites(token);
     } catch (e) {
       throw new HttpException(
         'Не удалось получить все запросы на добавление в друзья',
