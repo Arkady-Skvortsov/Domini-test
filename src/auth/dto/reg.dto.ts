@@ -4,6 +4,6 @@ export default interface RegDTO<T, R> {
   health: R;
   defense: R;
   coins: R;
-  refreshToken?: T;
+  refreshToken?: any;
   cristaly: R;
 }

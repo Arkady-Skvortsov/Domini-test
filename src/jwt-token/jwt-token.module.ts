@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
-import { JwtTokenService } from './jwt-token.service';
+import { Global, Module } from '@nestjs/common';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtTokenService } from './jwt-token.service';
 import UserEntity from 'src/users/entities/users.entity';
 import JwtTokenEntity from './entities/jwt-token.entity';
 import { UsersModule } from 'src/users/users.module';
-import { JwtModule } from '@nestjs/jwt';
 
+@Global()
 @Module({
   providers: [JwtTokenService],
   imports: [
@@ -17,6 +18,6 @@ import { JwtModule } from '@nestjs/jwt';
     TypeOrmModule.forFeature([UserEntity, JwtTokenEntity]),
     UsersModule,
   ],
-  exports: [JwtTokenService],
+  exports: [JwtTokenService, JwtModule],
 })
 export class JwtTokenModule {}

@@ -5,9 +5,9 @@ export class resuorces<T> {
   cristaly: T;
 }
 
-export class UpdateUserDTO {
-  coins: number;
-  cristaly: number;
+export class UpdateUserDTO<T> {
+  coins?: T;
+  cristaly?: T;
   jwtToken?: any;
   catchInvites?: any;
   catchPresents?: any;

@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import UserEntity from '../../users/entities/users.entity';
 
 @Entity({ name: 'presents' })
-export default class PresentEntity {
+export default class PresentsEntity {
   @ApiProperty({
     type: Number,
     example: 20,

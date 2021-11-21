@@ -9,24 +9,24 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { PresentService } from './present.service';
-import { presentType } from './dto/present.dto';
+import { PresentsService } from './presents.service';
+import { presentType } from './dto/create-present.dto';
 import { JwtTokenGuard } from 'src/jwt-token/jwt-token.guard';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UserGuard } from 'src/users/user.guard';
 
 @ApiTags('Present')
 @Controller('presents')
-export class PresentController {
-  constructor(private presentService: PresentService) {}
+export class PresentsController {
+  constructor(private presentService: PresentsService) {}
 
   @ApiOperation({ summary: 'Get last present with different types' })
   @ApiResponse({ type: Object, status: 200 })
   @UseGuards(JwtTokenGuard, AuthGuard)
   @Get('/last/:type/')
-  async get_last_present(@Param() type: presentType, @Body() username: string) {
+  get_last_present(@Param() type: presentType, @Body() token: string) {
     try {
-      return this.presentService.get_last_present();
+      return this.presentService.get_last_present(type, token);
     } catch (e) {
       throw new HttpException(
         'Не удалось получить информацию о последней вещи, которую вы запра',
@@ -44,7 +44,7 @@ export class PresentController {
     @Body() token: string,
   ) {
     try {
-      return 'present to friend';
+      return this.presentService.send_present_to_friend(friend_name, token);
     } catch (e) {
       throw new HttpException(
         'Не удалось отправить подарок другу',

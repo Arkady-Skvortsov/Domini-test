@@ -32,22 +32,4 @@ export class UsersController {
       );
     }
   }
-
-  @ApiOperation({ summary: 'Should be send invite into friends' })
-  @ApiResponse({ type: Object, status: 201 })
-  @UseGuards(JwtTokenGuard, AuthGuard)
-  @Post('/invite/:catcher_id')
-  async invite_in_friends(
-    @Param() catcher_id: number,
-    @Body() inviter: number,
-  ) {
-    try {
-      return this.usersService.invite_in_friends(catcher_id, inviter);
-    } catch (e) {
-      throw new HttpException(
-        'Не удалось пригласить в друзья',
-        HttpStatus.FORBIDDEN,
-      );
-    }
-  }
 }

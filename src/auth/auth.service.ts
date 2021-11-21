@@ -59,24 +59,23 @@ export class AuthService {
 
     await this.check_password(dto.password, current_user.password);
 
-    await this.jwtTokenService.refresh_token(current_user.jwt_token.token);
+    await this.jwtTokenService.refresh_token(
+      current_user.username,
+      dto.refreshToken,
+    );
 
     return current_user;
   }
 
   private async check_password(dto_password: string, user_password: string) {
-    try {
-      const differense_password = await bcrypt.compare(
-        dto_password,
-        user_password,
-      );
+    const differense_password = await bcrypt.compare(
+      dto_password,
+      user_password,
+    );
 
-      if (!differense_password)
-        throw new HttpException('Пароли не совпадают', HttpStatus.FORBIDDEN);
+    if (!differense_password)
+      throw new HttpException('Пароли не совпадают', HttpStatus.FORBIDDEN);
 
-      return differense_password;
-    } catch (e) {
-      throw new HttpException('Пароли не совпадают....', HttpStatus.FORBIDDEN);
-    }
+    return differense_password;
   }
 }

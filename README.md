@@ -50,7 +50,7 @@ $ npm run start:prod
   # Remove domini-image
   $ docker rmi 389798/domini-image
 
-  #PostgresQL (13 version)
+  #PostgresQL (14 version)
 
   # download postgres image
   $ docker pull postgres
@@ -114,6 +114,12 @@ $ npm run start:prod
 
   # docker-compose down + docker-compose stop + rmi domini image
   $ make chain-to-down
+```
+
+## How to use and test project? :)
+
+```bash
+
 ```
 
 ## Test

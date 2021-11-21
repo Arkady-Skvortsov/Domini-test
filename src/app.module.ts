@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { PresentModule } from './present/present.module';
 import { AuthModule } from './auth/auth.module';
-import { InviteModule } from './invite/invite.module';
-import { JwtModule } from '@nestjs/jwt';
+import { InvitesModule } from './invites/invites.module';
+import { PresentsModule } from './presents/presents.module';
 
 @Module({
   imports: [
@@ -25,7 +24,6 @@ import { JwtModule } from '@nestjs/jwt';
       synchronize: true,
     }),
 
-    PresentModule,
     AuthModule,
   ],
 })

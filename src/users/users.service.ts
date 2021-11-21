@@ -27,7 +27,7 @@ export class UsersService {
   async resource_operation(
     operation_type: string,
     data: RecourceOperationDTO<number>,
-  ) {
+  ): Promise<number> {
     let current_resource = await this.choose_resources(
       data.id,
       data.resource_type,
@@ -38,21 +38,27 @@ export class UsersService {
     if (operation_type === 'decrease') return (current_resource -= data.count);
   }
 
-  async get_current_user(id: number) {
+  async get_current_user(id: number): Promise<UserEntity> {
     const current_user = await this.userEntity.findOne(id);
 
     return current_user;
   }
 
-  async create_user(dto: RegDTO<string, number>) {
-    const new_user = await this.userEntity.create(dto);
+  async create_user(dto: RegDTO<string, number>): Promise<UserEntity> {
+    const new_user = await this.userEntity.create({
+      ...dto,
+      jwt_token: dto.refreshToken,
+    });
 
     await this.userEntity.save(new_user);
 
     return new_user;
   }
 
-  async update_current_user(username: string, dto: UpdateUserDTO) {
+  async update_current_user(
+    username: string,
+    dto: UpdateUserDTO<number>,
+  ): Promise<UserEntity> {
     const current_user = await this.get_current_user_by_username(username);
 
     await this.userEntity.update(current_user, dto);
@@ -60,13 +66,16 @@ export class UsersService {
     return current_user;
   }
 
-  async get_current_user_by_username(username: string) {
+  async get_current_user_by_username(username: string): Promise<UserEntity> {
     const current_user = await this.userEntity.findOne({ where: { username } });
 
     return current_user;
   }
 
-  private async choose_resources(id: number, resourceType: resourceType) {
+  private async choose_resources(
+    id: number,
+    resourceType: resourceType,
+  ): Promise<number> {
     const current_user = await this.get_current_user(id);
 
     if (resourceType === 'Кристалы') return current_user.cristaly;

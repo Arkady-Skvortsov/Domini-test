@@ -7,27 +7,30 @@ import {
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { Observable } from 'rxjs';
 import { JwtTokenService } from 'src/jwt-token/jwt-token.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  // constructor(private jwtTokenService: JwtTokenService) {}
+  constructor(private jwtTokenService: JwtTokenService) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    // const jwt = req.cookies['jwt'];
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest();
 
-    // const verify_token = await this.jwtTokenService.verify_token(jwt);
+    this.jwtTokenService.verify_token(request.token);
 
-    // const current_jwt_token = await this.jwtTokenService.find_token(
-    //   verify_token,
-    // );
+    const current_jwt_token = this.jwtTokenService.find_token(request.token);
 
-    // if (!current_jwt_token) {
-    //   throw new HttpException(
-    //     'Такого игрока не существует',
-    //     HttpStatus.FORBIDDEN,
-    //   );
-    // }
+    if (!current_jwt_token) {
+      throw new HttpException(
+        'Такого игрока не существует',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    request.user = current_jwt_token;
 
     return true;
   }

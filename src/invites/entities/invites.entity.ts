@@ -17,7 +17,7 @@ export default class InviteEntity {
     example: "Hello, can I become you'r friend? :)",
     description: '',
   })
-  @Column({ type: 'varchar', nullable: true, default: '' })
+  @Column({ type: 'varchar', nullable: false })
   public text: string;
 
   @ApiProperty({
@@ -25,7 +25,7 @@ export default class InviteEntity {
     example: 'Sergey',
     description: 'Man, who send a current invite to the friends',
   })
-  @ManyToOne(() => UserEntity, (user) => user.username)
+  @ManyToOne(() => UserEntity, (user) => user.username, { onDelete: 'CASCADE' })
   public sender: string;
 
   @ApiProperty({
@@ -33,6 +33,6 @@ export default class InviteEntity {
     example: 'Arkadiy',
     description: 'User, which catch a current invite form another user',
   })
-  @ManyToOne(() => UserEntity, (user) => user.username)
+  @ManyToOne(() => UserEntity, (user) => user.username, { onDelete: 'CASCADE' })
   public catcher: string;
 }

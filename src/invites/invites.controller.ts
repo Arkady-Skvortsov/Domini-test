@@ -1,24 +1,23 @@
 import {
-  Body,
   Controller,
   Get,
+  Post,
+  Param,
+  Body,
   HttpException,
   HttpStatus,
-  Param,
-  Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { JwtTokenGuard } from 'src/jwt-token/jwt-token.guard';
-import { UserGuard } from 'src/users/user.guard';
-import CreateInviteDTO, { inviteResponse } from './dto/create-invite.dto';
-import { InviteService } from './invite.service';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtTokenGuard } from '../jwt-token/jwt-token.guard';
+import { AuthGuard } from '../auth/auth.guard';
+import { InvitesService } from './invites.service';
+import { inviteResponse } from './dto/create-invites.dto';
 
-@ApiTags('Invite')
-@Controller('invite')
-export class InviteController {
-  constructor(private inviteService: InviteService) {}
+@ApiTags('Invites')
+@Controller('invites')
+export class InvitesController {
+  constructor(private inviteService: InvitesService) {}
 
   @ApiOperation({ summary: 'Should be get all invites in friends' })
   @ApiResponse({
@@ -60,7 +59,7 @@ export class InviteController {
     summary: 'Should be send an invite into friends to the current user',
   })
   @ApiResponse({ type: Object, status: 201 })
-  @UseGuards(JwtTokenGuard, AuthGuard, UserGuard)
+  @UseGuards(JwtTokenGuard, AuthGuard)
   @Post('/send/:username')
   async send_invite_in_friends(
     @Body() token: string,
@@ -68,7 +67,12 @@ export class InviteController {
     @Param() username: string,
   ) {
     try {
-      return this.inviteService.send_invite_in_friends(token, text, username);
+      const current_invite = await this.inviteService.send_invite_in_friends(
+        token,
+        text,
+        username,
+      );
+      return `Вы отправили приглашение вашему другу ${current_invite.catcher} со словами ${current_invite.text}`;
     } catch (e) {
       throw new HttpException(
         'Не удалось отправить заявку в друзья',
@@ -79,7 +83,7 @@ export class InviteController {
 
   @ApiOperation({ summary: 'Should be get an answer to the invite' })
   @ApiResponse({ type: String, status: 201 })
-  @UseGuards(JwtTokenGuard, AuthGuard, UserGuard)
+  @UseGuards(JwtTokenGuard, AuthGuard)
   @Post('/answer/:username')
   async answer_the_invite(
     @Param() username: string,

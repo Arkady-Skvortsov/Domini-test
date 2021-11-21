@@ -7,9 +7,9 @@ import {
   OneToOne,
 } from 'typeorm';
 import FriendsEntity from './friends.entity';
-import PresentEntity from '../../present/entities/present.entity';
-import JwtTokenEntity from 'src/jwt-token/entities/jwt-token.entity';
-import InviteEntity from 'src/invite/entities/invite.entity';
+import PresentEntity from '../../presents/entities/presents.entity';
+import JwtTokenEntity from '../../jwt-token/entities/jwt-token.entity';
+import InviteEntity from '../../invites/entities/invites.entity';
 
 @Entity({ name: 'users' })
 export default class UserEntity {
@@ -26,7 +26,7 @@ export default class UserEntity {
     example: 'Arkadiy',
     description: 'Username of the current user',
   })
-  @Column({ type: 'varchar', nullable: false, unique: true })
+  @Column({ type: 'varchar', nullable: false })
   public username: string;
 
   @ApiProperty({
@@ -34,7 +34,7 @@ export default class UserEntity {
     example: 'Password123',
     description: 'Password of the current user',
   })
-  @Column({ type: 'varchar', nullable: true, unique: true })
+  @Column({ type: 'varchar', nullable: true })
   public password: string;
 
   @ApiProperty({

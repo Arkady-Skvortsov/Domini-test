@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Observable } from 'rxjs';
+import AuthDTO from 'src/auth/dto/auth.dto';
 import RegDTO from 'src/auth/dto/reg.dto';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
@@ -27,16 +29,21 @@ export class JwtTokenService {
     return new_token.token;
   }
 
-  async refresh_token(token: string): Promise<string> {
-    const current_token = await this.find_token(token);
+  async refresh_token(username: string, refreshToken: string) {
+    const current_user = await this.userService.get_current_user_by_username(
+      username,
+    );
 
-    if (current_token) {
-      current_token.token = token;
+    let current_token = current_user.jwt_token.token;
+    let new_token;
 
-      await this.jwtTokenEntity.update(current_token.id, { token });
+    if (current_token !== null) {
+      current_token = refreshToken;
+
+      new_token = await this.generate_token(current_user);
     }
 
-    return current_token.token;
+    return new_token;
   }
 
   async find_token(token: string) {
@@ -47,7 +54,7 @@ export class JwtTokenService {
     return current_token;
   }
 
-  async verify_token(token: string) {
+  verify_token(token: string): Observable<boolean> {
     return this.jwtService.verify(token);
   }
 

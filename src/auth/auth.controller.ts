@@ -22,8 +22,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @ApiOperation({ summary: 'Should be registered a new user' })
-  @ApiResponse({ type: String, status: 201 })
-  @UseGuards(JwtTokenGuard)
+  @ApiResponse({ type: Object, status: 201 })
   @Post('/registration')
   async registration(
     @Res() response: Response,
@@ -32,14 +31,16 @@ export class AuthController {
     try {
       const new_user = await this.authService.registration(dto);
 
-      response.cookie('jwt-token', new_user.jwt_token, {
-        expires: new Date(Date.now() + 24 * 3600 * 1000),
-        secure: true,
-        httpOnly: true,
+      response.cookie('jwt-token', new_user.jwt_token.token, {
+        expires: new Date(Date.now() + 24 * 60 * 60 * 3600),
       });
 
-      response.send(new_user.jwt_token);
+      console.log(new_user.jwt_token.token);
+
+      response.send(new_user);
     } catch (e) {
+      console.log(e);
+
       throw new UnauthorizedException('Такой пользователь не зарегистрирован');
     }
   }
@@ -48,7 +49,7 @@ export class AuthController {
   @ApiResponse({ type: String, status: 201 })
   @UseGuards(JwtTokenGuard, AuthGuard)
   @Post('/authorization')
-  async authorization(dto: AuthDTO<string>) {
+  async authorization(@Body() dto: AuthDTO<string>) {
     try {
       return this.authService.authorization(dto);
     } catch (e) {
